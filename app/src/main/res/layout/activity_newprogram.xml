@@ -1,0 +1,150 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.umkc.amp95.remembrallapp.newprogram"
+    android:padding="@dimen/padding_5dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/title_activity_newprogram"
+        android:textSize="30sp"
+        android:id="@+id/newProgramTextViewTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:padding="@dimen/padding_5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/name"
+        android:id="@+id/nameTextView"
+        android:layout_below="@+id/newProgramTextViewTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="@dimen/padding_5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:layout_below="@+id/newProgramTextViewTitle"
+        android:layout_alignRight="@+id/newProgramTextViewTitle"
+        android:layout_alignEnd="@+id/newProgramTextViewTitle"
+        android:layout_toRightOf="@+id/daysTextView"
+        android:layout_toEndOf="@+id/daysTextView">
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/days_of_week"
+        android:id="@+id/daysTextView"
+        android:layout_below="@+id/name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="@dimen/padding_5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/day"
+        android:layout_below="@+id/name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/daysTextView"
+        android:layout_toEndOf="@+id/daysTextView">
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/time"
+        android:id="@+id/timeTextView"
+        android:layout_below="@+id/day"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="@dimen/padding_5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time"
+        android:inputType="time"
+        android:layout_below="@+id/day"
+        android:layout_alignLeft="@+id/day"
+        android:layout_alignStart="@+id/day"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+    </EditText>
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="@string/channel"
+    android:id="@+id/channelTextView"
+    android:layout_below="@+id/time"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:padding="@dimen/padding_5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/channel"
+        android:layout_below="@+id/time"
+        android:layout_alignLeft="@+id/time"
+        android:layout_alignStart="@+id/time"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/notification"
+        android:id="@+id/levelTextView"
+        android:layout_below="@+id/channel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="@dimen/padding_5dp"
+        android:layout_toLeftOf="@+id/notification"
+        android:layout_toStartOf="@+id/notification" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification"
+        android:layout_below="@+id/channel"
+        android:layout_alignLeft="@+id/channel"
+        android:layout_alignStart="@+id/channel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/levelTextView">
+    </EditText>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_button"
+        android:onClick="saveData"
+        android:id="@+id/button"
+        android:layout_below="@+id/levelTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

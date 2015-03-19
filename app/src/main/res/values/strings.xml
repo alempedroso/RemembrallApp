@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Remembrall</string>
+    <string name="maintitle">TV Programs</string>
+    <string name="action_settings">Settings</string>
+    <string name="name">Name</string>
+    <string name="days_of_week">Day of week</string>
+    <string name="time">Time</string>
+    <string name="channel">Channel</string>
+    <string name="notification">Level of Notification</string>
+    <string name="list">List of Programs</string>
+    <string name="action_add">ADD</string>
+    <string name="save_button">Save</string>
+    <string name="delete_button">Delete</string>
+    <string name="title_activity_newprogram">Add TV Program</string>
+    <string name="title_activity_editprogram">Edit TV Program</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_program_listview">program_listview</string>
+
+</resources>
