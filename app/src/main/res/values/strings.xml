@@ -12,11 +12,17 @@
     <string name="list">List of Programs</string>
     <string name="action_add">ADD</string>
     <string name="save_button">Save</string>
+    <string name="edit_button">Edit</string>
     <string name="delete_button">Delete</string>
     <string name="title_activity_newprogram">Add TV Program</string>
     <string name="title_activity_editprogram">Edit TV Program</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_program_listview">program_listview</string>
-    <string name="title_activity_activity_splash">ActivitySplash</string>
+    <string name="title_activity_programs_listview"></string>
+    <string name="title_activity_activity_splash">Remembrall</string>
+    <string name="title_activity_activity_program_info">Program Info</string>
+
+    <string name="info_days_of_week">Day of week:</string>
+    <string name="info_time">Time:</string>
+    <string name="info_channel">Channel:</string>
+    <string name="info_notification">Level of Notification:</string>
 
 </resources>

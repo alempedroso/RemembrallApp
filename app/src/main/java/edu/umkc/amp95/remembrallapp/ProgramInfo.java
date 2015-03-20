@@ -6,34 +6,35 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
 
-public class EditProgram extends ActionBarActivity {
+public class ProgramInfo extends ActionBarActivity {
 
-    EditText name;
-    EditText day;
-    EditText time;
-    EditText channel;
-    EditText notification;
+    TextView name;
+    TextView day;
+    TextView time;
+    TextView channel;
+    TextView notification;
 
     DBHelper db = new DBHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editprogram);
+        setContentView(R.layout.activity_activity_program_info);
 
-        name = (EditText) findViewById(R.id.name);
-        day = (EditText) findViewById(R.id.day);
-        time = (EditText) findViewById(R.id.time);
-        channel = (EditText) findViewById(R.id.channel);
-        notification = (EditText) findViewById(R.id.notification);
+        name = (TextView) findViewById(R.id.name);
+        day = (TextView) findViewById(R.id.day);
+        time = (TextView) findViewById(R.id.time);
+        channel = (TextView) findViewById(R.id.channel);
+        notification = (TextView) findViewById(R.id.notification);
 
         Intent myIntent = getIntent();
-
         String id = myIntent.getStringExtra("id");
 
         HashMap<String, String> programInfo = db.selectSeries(id);
@@ -51,7 +52,7 @@ public class EditProgram extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_editprogram, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_program_info, menu);
         return true;
     }
 
@@ -70,34 +71,31 @@ public class EditProgram extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveData (View view){
-        HashMap<String, String> queryValues = new HashMap<String, String>();
+    public void callMainActivity(View view){
+        Intent mainIntent = new Intent(getApplication(), MainActivity.class);
+        startActivity(mainIntent);
+    }
 
-        name = (EditText) findViewById(R.id.name);
-        day = (EditText) findViewById(R.id.day);
-        time = (EditText) findViewById(R.id.time);
-        channel = (EditText) findViewById(R.id.channel);
-        notification = (EditText) findViewById(R.id.notification);
-
+    public void editProgram(View view){
         Intent myIntent = getIntent();
 
         String id = myIntent.getStringExtra("id");
 
-        queryValues.put("id", id);
-        queryValues.put("name", name.getText().toString());
-        queryValues.put("day", day.getText().toString());
-        queryValues.put("time", time.getText().toString());
-        queryValues.put("channel", channel.getText().toString());
-        queryValues.put("notification", notification.getText().toString());
+        Intent editIntent = new Intent(getApplication(), EditProgram.class);
 
-        db.updateSeries(queryValues);
+        editIntent.putExtra("id", id);
+
+        startActivity(editIntent);
+    }
+
+    public void deleteData(View view){
+
+        Intent myIntent = getIntent();
+        String id = myIntent.getStringExtra("id");
+
+        db.deleteSeries(id);
 
         this.callMainActivity(view);
 
-    }
-
-    public void callMainActivity(View view){
-        Intent mainIntent = new Intent(getApplication(), MainActivity.class);
-        startActivity(mainIntent);
     }
 }

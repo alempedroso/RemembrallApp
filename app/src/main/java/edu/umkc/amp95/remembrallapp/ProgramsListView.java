@@ -11,7 +11,7 @@ public class ProgramsListView extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_program_listview);
+        setContentView(R.layout.activity_programs_listview);
     }
 
 

@@ -30,7 +30,7 @@ public class NewProgram extends ActionBarActivity {
         name = (EditText) findViewById(R.id.name);
         day = (EditText) findViewById(R.id.day);
         time = (EditText) findViewById(R.id.time);
-        channel = (EditText) findViewById(R.id.channel);
+        channel = (EditText) findViewById(R.id.textViewChannel);
         notification = (EditText) findViewById(R.id.notification);
 
     }

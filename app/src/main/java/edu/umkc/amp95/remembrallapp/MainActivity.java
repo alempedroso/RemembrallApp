@@ -1,6 +1,5 @@
 package edu.umkc.amp95.remembrallapp;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -19,11 +18,7 @@ import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity {
 
-    Intent intent;
-    TextView id;
-
     DBHelper database = new DBHelper(this);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +33,11 @@ public class MainActivity extends ActionBarActivity {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long ID) {
-                    id = (TextView) view.findViewById(R.id.id);
+                    TextView id = (TextView) view.findViewById(R.id.id);
 
                     String idValue = id.getText().toString();
 
-                    Intent editIntent = new Intent(getApplication(), EditProgram.class);
+                    Intent editIntent = new Intent(getApplication(), ProgramInfo.class);
 
                     editIntent.putExtra("id", idValue);
 
@@ -51,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
             });
 
             ListAdapter adapter = new SimpleAdapter(
-                    MainActivity.this, programsList, R.layout.activity_program_listview,
+                    MainActivity.this, programsList, R.layout.activity_programs_listview,
                     new String[] {"id", "name", "time", "day"},
                     new int[] {R.id.id, R.id.name, R.id.time, R.id.day});
 

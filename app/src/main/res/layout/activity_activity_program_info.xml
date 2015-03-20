@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="edu.umkc.amp95.remembrallapp.ProgramInfo">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/info_channel"
+        android:id="@+id/textViewChannel"
+        android:layout_below="@+id/name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/channel"
+        android:layout_alignTop="@+id/textViewChannel"
+        android:layout_toRightOf="@+id/textViewChannel"
+        android:layout_toEndOf="@+id/textViewChannel"
+        android:layout_marginLeft="10px" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/info_days_of_week"
+        android:id="@+id/textViewDaysOfWeek"
+        android:layout_below="@+id/textViewChannel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/day"
+        android:layout_alignTop="@+id/textViewDaysOfWeek"
+        android:layout_toRightOf="@+id/textViewDaysOfWeek"
+        android:layout_toEndOf="@+id/textViewDaysOfWeek"
+        android:layout_marginLeft="10px" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/info_time"
+        android:id="@+id/textViewTime"
+        android:layout_below="@+id/textViewDaysOfWeek"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/time"
+        android:layout_alignTop="@+id/textViewTime"
+        android:layout_toRightOf="@+id/textViewTime"
+        android:layout_toEndOf="@+id/textViewTime"
+        android:layout_marginLeft="10px" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/info_notification"
+        android:id="@+id/textViewNotification"
+        android:layout_below="@+id/textViewTime"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/notification"
+        android:layout_alignTop="@+id/textViewNotification"
+        android:layout_toRightOf="@+id/textViewNotification"
+        android:layout_toEndOf="@+id/textViewNotification"
+        android:layout_marginLeft="10px" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_button"
+        android:id="@+id/buttonEdit"
+        android:layout_below="@+id/textViewNotification"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="editProgram" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_button"
+        android:id="@+id/buttonDelete"
+        android:layout_below="@+id/buttonEdit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_alignRight="@+id/buttonEdit"
+        android:layout_alignEnd="@+id/buttonEdit"
+        android:onClick="deleteData" />
+
+</RelativeLayout>

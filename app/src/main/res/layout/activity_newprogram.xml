@@ -80,7 +80,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time"
-        android:inputType="time"
         android:layout_below="@+id/day"
         android:layout_alignLeft="@+id/day"
         android:layout_alignStart="@+id/day"
@@ -102,7 +101,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/channel"
+        android:id="@+id/textViewChannel"
         android:layout_below="@+id/time"
         android:layout_alignLeft="@+id/time"
         android:layout_alignStart="@+id/time"
@@ -116,7 +115,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/notification"
         android:id="@+id/levelTextView"
-        android:layout_below="@+id/channel"
+        android:layout_below="@+id/textViewChannel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:padding="@dimen/padding_5dp"
@@ -127,9 +126,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/notification"
-        android:layout_below="@+id/channel"
-        android:layout_alignLeft="@+id/channel"
-        android:layout_alignStart="@+id/channel"
+        android:layout_below="@+id/textViewChannel"
+        android:layout_alignLeft="@+id/textViewChannel"
+        android:layout_alignStart="@+id/textViewChannel"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/levelTextView">
@@ -145,6 +144,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>
