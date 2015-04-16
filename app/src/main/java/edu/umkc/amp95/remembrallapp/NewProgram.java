@@ -6,32 +6,59 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class NewProgram extends ActionBarActivity {
+public class NewProgram extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
 
     EditText name;
-    EditText day;
     EditText time;
     EditText channel;
-    EditText notification;
+    CheckBox sunday;
+    CheckBox monday;
+    CheckBox tuesday;
+    CheckBox wednesday;
+    CheckBox thursday;
+    CheckBox friday;
+    CheckBox saturday;
+    Spinner notification;
 
     DBHelper db = new DBHelper(this);
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newprogram);
 
         name = (EditText) findViewById(R.id.name);
-        day = (EditText) findViewById(R.id.day);
         time = (EditText) findViewById(R.id.time);
         channel = (EditText) findViewById(R.id.textViewChannel);
-        notification = (EditText) findViewById(R.id.notification);
+
+        notification = (Spinner) findViewById(R.id.comboNotification);
+
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.notification_levels, R.layout.support_simple_spinner_dropdown_item);
+        notification.setAdapter(adapter);
+        notification.setOnItemSelectedListener(this);
+
+        sunday = (CheckBox)findViewById(R.id.boxSunday);
+        monday = (CheckBox)findViewById(R.id.boxMonday);
+        tuesday = (CheckBox)findViewById(R.id.boxTuesday);
+        wednesday = (CheckBox)findViewById(R.id.boxWednesday);
+        thursday = (CheckBox)findViewById(R.id.boxThursday);
+        friday = (CheckBox)findViewById(R.id.boxFriday);
+        saturday = (CheckBox)findViewById(R.id.boxSaturday);
 
     }
 
@@ -62,12 +89,46 @@ public class NewProgram extends ActionBarActivity {
         HashMap<String, String> queryValues = new HashMap<String, String>();
 
         queryValues.put("name", name.getText().toString());
-        queryValues.put("day", day.getText().toString());
         queryValues.put("time", time.getText().toString());
         queryValues.put("channel", channel.getText().toString());
-        queryValues.put("notification", notification.getText().toString());
+        queryValues.put("notification", notification.getSelectedItem().toString());
 
-        db.insertSeries(queryValues);
+        db.insertShow(queryValues);
+
+        queryValues = db.selectLastShowId();
+
+        String id = queryValues.get("id");
+        ArrayList<String> days = new ArrayList<String>();
+
+        if(sunday.isChecked()){
+            days.add("Sunday");
+        }
+
+        if(monday.isChecked()){
+            days.add("Monday");
+        }
+
+        if(tuesday.isChecked()){
+            days.add("Tuesday");
+        }
+
+        if(wednesday.isChecked()){
+            days.add("Wednesday");
+        }
+
+        if(thursday.isChecked()){
+            days.add("Thursday");
+        }
+
+        if(friday.isChecked()){
+            days.add("Friday");
+        }
+
+        if(saturday.isChecked()){
+            days.add("Saturday");
+        }
+
+        db.insertDays(id, days);
 
         this.callMainActivity(view);
     }
@@ -75,6 +136,17 @@ public class NewProgram extends ActionBarActivity {
     public void callMainActivity(View view){
         Intent mainIntent = new Intent(getApplication(), MainActivity.class);
         startActivity(mainIntent);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //TextView textSelected = (TextView) view;
+        //Toast.makeText(this, "You selected " + textSelected.getText(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

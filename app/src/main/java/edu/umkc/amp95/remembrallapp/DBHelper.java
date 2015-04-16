@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,63 +16,86 @@ import java.util.HashMap;
  */
 public class DBHelper extends SQLiteOpenHelper{
 
+    private static String TAG = ActivitySplash.class.getName();
+
     public DBHelper(Context context)
     {
-        super(context, "programs.db", null, 1);
+        super(context, "showsDB.db", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String query = "CREATE TABLE movies (" +
+        String query = "CREATE TABLE show (" +
                 "id INTEGER PRIMARY KEY," +
                 "name TEXT," +
-                "day TEXT," +
                 "time TEXT," +
                 "channel TEXT," +
                 "notification TEXT)";
 
         db.execSQL(query);
 
-        query = "CREATE TABLE series (" +
-                "id INTEGER PRIMARY KEY," +
-                "name TEXT," +
+        query = "CREATE TABLE days (" +
+                "id INTEGER," +
                 "day TEXT," +
-                "time TEXT," +
-                "channel TEXT," +
-                "notification TEXT)";
+                "FOREIGN KEY(id) REFERENCES show(id) ON DELETE CASCADE)";
+        try
+        {
+            db.execSQL(query);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
 
-        db.execSQL(query);
-
-        query = "CREATE TABLE matches (" +
-                "id INTEGER PRIMARY KEY," +
-                "name TEXT," +
-                "day TEXT," +
-                "time TEXT," +
-                "channel TEXT," +
-                "notification TEXT)";
-
-        db.execSQL(query);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        String query = "DROP TABLE IF EXISTS movies";
-        db.execSQL(query);
+        String query = "DROP TABLE IF EXISTS show";
 
-        query = "DROP TABLE IF EXISTS series";
-        db.execSQL(query);
+        try
+        {
+            db.execSQL(query);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
 
-         query = "DROP TABLE IF EXISTS matches";
-        db.execSQL(query);
+        query = "DROP TABLE IF EXISTS day";
+
+        try
+        {
+            db.execSQL(query);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
 
         onCreate(db);
 
     }
 
-    public void insertSeries(HashMap<String, String> query){
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            try
+            {
+                db.execSQL("PRAGMA foreign_keys=ON;");
+            }
+            catch (SQLiteException e)
+            {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    public void insertShow(HashMap<String, String> query){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -78,17 +103,83 @@ public class DBHelper extends SQLiteOpenHelper{
 
         values.put("name", query.get("name"));
         values.put("time", query.get("time"));
-        values.put("day", query.get("day"));
         values.put("notification", query.get("notification"));
         values.put("channel", query.get("channel"));
 
-        db.insert("series", null, values);
+        try
+        {
+            db.insert("show", null, values);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
+
+        db.close();
+
+
+    }
+
+    public void insertDays(String id, ArrayList<String> days){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for(String day : days)
+        {
+            ContentValues values = new ContentValues();
+            values.put("id", id);
+            values.put("day", day);
+
+            try
+            {
+                db.insert("days", null, values);
+            }
+            catch (SQLiteException e)
+            {
+                Log.e(TAG, e.getMessage());
+            }
+        }
 
         db.close();
 
     }
 
-    public int updateSeries(HashMap<String, String> query){
+    public void updateDays(String id, ArrayList<String> days){
+
+        String query = "DELETE FROM days WHERE id = " + id;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try
+        {
+            db.execSQL(query);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
+
+        for(String day : days)
+        {
+            ContentValues values = new ContentValues();
+            values.put("id", id);
+            values.put("day", day);
+
+            try
+            {
+                db.insert("days", null, values);
+            }
+            catch (SQLiteException e)
+            {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+
+        db.close();
+
+    }
+
+    public int updateShow(HashMap<String, String> query){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -96,63 +187,193 @@ public class DBHelper extends SQLiteOpenHelper{
 
         values.put("name", query.get("name"));
         values.put("time", query.get("time"));
-        values.put("day", query.get("day"));
         values.put("notification", query.get("notification"));
         values.put("channel", query.get("channel"));
 
-        return db.update("series", values,"id " + " = ?", new String[] { query.get("id") });
+        return db.update("show", values,"id " + " = ?", new String[] { query.get("id") });
 
     }
 
-    public void deleteSeries (String id){
+    public void deleteShow(String id){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "DELETE FROM series WHERE id = '" + id + "'";
+        String query = "DELETE FROM show WHERE id = " + id;
 
-        db.execSQL(query);
+        try
+        {
+            db.execSQL(query);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
+
+        query = "DELETE FROM days WHERE id = " + id;
+
+        try
+        {
+            db.execSQL(query);
+        }
+        catch (SQLiteException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
 
         db.close();
 
     }
 
-    public ArrayList<HashMap<String, String>> selectSeries(){
+    public ArrayList<HashMap<String, String>> selectShows(){
 
-        ArrayList<HashMap<String, String>> series = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String, String>> shows = new ArrayList<HashMap<String, String>>();
 
-        String query = "SELECT * FROM series";
+        String query = "SELECT * FROM show";
+        String days = new String();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
 
-        if(cursor.moveToFirst()){
+        if(cursor.moveToFirst())
+        {
 
-            do {
+            do
+            {
+
+                query = "SELECT day FROM days where id = " + cursor.getString(0);
+
+                Cursor daysCursor = db.rawQuery(query, null);
+
+                if(daysCursor.moveToFirst())
+                {
+
+                    days = "";
+                    do
+                    {
+                        if(daysCursor.getString(0).equals(new String("Sunday")))
+                        {
+                            days+="Su ";
+                        }
+                        if(daysCursor.getString(0).equals(new String("Monday")))
+                        {
+                            days+="Mo ";
+                        }
+                        if(daysCursor.getString(0).equals(new String("Tuesday")))
+                        {
+                            days+="Tu ";
+                        }
+                        if(daysCursor.getString(0).equals(new String("Wednesday")))
+                        {
+                            days+="We ";
+                        }
+                        if(daysCursor.getString(0).equals(new String("Thursday")))
+                        {
+                            days+="Th ";
+                        }
+                        if(daysCursor.getString(0).equals(new String("Friday")))
+                        {
+                            days+="Fr ";
+                        }
+                        if(daysCursor.getString(0).equals(new String("Saturday")))
+                        {
+                            days+="Sa ";
+                        }
+                    }while(daysCursor.moveToNext());
+                }
 
                 HashMap<String, String> row = new HashMap<String, String>();
 
                 row.put("id", cursor.getString(0));
                 row.put("name", cursor.getString(1));
-                row.put("day", cursor.getString(2));
-                row.put("time", cursor.getString(3));
-                row.put("channel", cursor.getString(4));
-                row.put("notification", cursor.getString(5));
+                row.put("time", cursor.getString(2));
+                row.put("channel", cursor.getString(3));
+                row.put("notification", cursor.getString(4));
+                row.put("days", days);
 
-                series.add(row);
+                shows.add(row);
 
             }while(cursor.moveToNext());
 
         }
 
-        return series;
+        return shows;
     }
 
-    public HashMap<String, String> selectSeries(String id){
+    public HashMap<String, String> selectShow(String id){
 
         HashMap<String, String> row = new HashMap<String, String>();
 
-        String query = "SELECT * FROM series WHERE id = '" + id + "'";
+        String query = "SELECT * FROM show WHERE id = " + id;
+        String days = "";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+
+        if(cursor.moveToFirst()){
+
+            String idx = cursor.getString(0);
+
+            query = "SELECT day FROM days where id = " + idx;
+
+            Cursor daysCursor = db.rawQuery(query, null);
+
+            if(daysCursor.moveToFirst())
+            {
+                do
+                {
+                    if(daysCursor.getString(0).equals(new String("Sunday")))
+                    {
+                        days+="Su ";
+                    }
+                    if(daysCursor.getString(0).equals(new String("Monday")))
+                    {
+                        days+="Mo ";
+                    }
+                    if(daysCursor.getString(0).equals(new String("Tuesday")))
+                    {
+                        days+="Tu ";
+                    }
+                    if(daysCursor.getString(0).equals(new String("Wednesday")))
+                    {
+                        days+="We ";
+                    }
+                    if(daysCursor.getString(0).equals(new String("Thursday")))
+                    {
+                        days+="Th ";
+                    }
+                    if(daysCursor.getString(0).equals(new String("Friday")))
+                    {
+                        days+="Fr ";
+                    }
+                    if(daysCursor.getString(0).equals(new String("Saturday")))
+                    {
+                        days+="Sa ";
+                    }
+                }while(daysCursor.moveToNext());
+            }
+
+            do {
+
+                row.put("id", cursor.getString(0));
+                row.put("name", cursor.getString(1));
+                row.put("time", cursor.getString(2));
+                row.put("channel", cursor.getString(3));
+                row.put("notification", cursor.getString(4));
+                row.put("days", days);
+
+            }while(cursor.moveToNext());
+        }
+
+        return row;
+    }
+
+    public HashMap<String, String> selectLastShowId(){
+
+        HashMap<String, String> row = new HashMap<String, String>();
+
+        String query = "SELECT * FROM show WHERE id = (SELECT max(id) FROM show)";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -164,14 +385,33 @@ public class DBHelper extends SQLiteOpenHelper{
 
                 row.put("id", cursor.getString(0));
                 row.put("name", cursor.getString(1));
-                row.put("day", cursor.getString(2));
-                row.put("time", cursor.getString(3));
-                row.put("channel", cursor.getString(4));
-                row.put("notification", cursor.getString(5));
+                row.put("time", cursor.getString(2));
+                row.put("channel", cursor.getString(3));
+                row.put("notification", cursor.getString(4));
 
             }while(cursor.moveToNext());
         }
 
         return row;
+    }
+
+    public ArrayList<String> selectDays(String id){
+
+        ArrayList<String> days = new ArrayList<String>();
+
+        String query = "SELECT day FROM days WHERE id = " + id;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+
+        if(cursor.moveToFirst()){
+
+            do {
+                days.add(cursor.getString(0));
+            }while(cursor.moveToNext());
+        }
+
+        return days;
     }
 }

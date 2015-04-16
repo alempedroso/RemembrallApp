@@ -24,9 +24,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ArrayList<HashMap<String, String>> programsList = database.selectSeries();
+        ArrayList<HashMap<String, String>> showsList = database.selectShows();
 
-        if(programsList.size() != 0)
+        if(showsList.size() != 0)
         {
             ListView lv = (ListView) findViewById(R.id.list);
 
@@ -46,9 +46,9 @@ public class MainActivity extends ActionBarActivity {
             });
 
             ListAdapter adapter = new SimpleAdapter(
-                    MainActivity.this, programsList, R.layout.activity_programs_listview,
-                    new String[] {"id", "name", "time", "day"},
-                    new int[] {R.id.id, R.id.name, R.id.time, R.id.day});
+                    MainActivity.this, showsList, R.layout.activity_programs_listview,
+                    new String[] {"id", "days", "name", "time"},
+                    new int[] {R.id.id, R.id.days, R.id.name, R.id.time});
 
             lv.setAdapter(adapter);
 

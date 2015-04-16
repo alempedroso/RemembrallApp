@@ -6,18 +6,29 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class EditProgram extends ActionBarActivity {
+public class EditProgram extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
 
     EditText name;
-    EditText day;
     EditText time;
     EditText channel;
-    EditText notification;
+    CheckBox sunday;
+    CheckBox monday;
+    CheckBox tuesday;
+    CheckBox wednesday;
+    CheckBox thursday;
+    CheckBox friday;
+    CheckBox saturday;
+    Spinner notification;
 
     DBHelper db = new DBHelper(this);
 
@@ -27,23 +38,67 @@ public class EditProgram extends ActionBarActivity {
         setContentView(R.layout.activity_editprogram);
 
         name = (EditText) findViewById(R.id.name);
-        day = (EditText) findViewById(R.id.day);
         time = (EditText) findViewById(R.id.time);
         channel = (EditText) findViewById(R.id.channel);
-        notification = (EditText) findViewById(R.id.notification);
+
+        notification = (Spinner) findViewById(R.id.comboNotification);
+
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.notification_levels, R.layout.support_simple_spinner_dropdown_item);
+        notification.setAdapter(adapter);
+        notification.setOnItemSelectedListener(this);
+
+        sunday = (CheckBox)findViewById(R.id.boxSunday);
+        monday = (CheckBox)findViewById(R.id.boxMonday);
+        tuesday = (CheckBox)findViewById(R.id.boxTuesday);
+        wednesday = (CheckBox)findViewById(R.id.boxWednesday);
+        thursday = (CheckBox)findViewById(R.id.boxThursday);
+        friday = (CheckBox)findViewById(R.id.boxFriday);
+        saturday = (CheckBox)findViewById(R.id.boxSaturday);
 
         Intent myIntent = getIntent();
 
         String id = myIntent.getStringExtra("id");
 
-        HashMap<String, String> programInfo = db.selectSeries(id);
+        HashMap<String, String> programInfo = db.selectShow(id);
+        ArrayList<String> days = db.selectDays(id);
 
         if(programInfo.size() != 0){
             name.setText(programInfo.get("name"));
-            day.setText(programInfo.get("day"));
             time.setText(programInfo.get("time"));
             channel.setText(programInfo.get("channel"));
-            notification.setText(programInfo.get("notification"));
+            //notification.setText(programInfo.get("notification"));
+
+            for(String day : days)
+            {
+                if(day.equals(new String("Sunday")))
+                {
+                    sunday.setChecked(true);
+                }
+                if(day.equals(new String("Monday")))
+                {
+                    monday.setChecked(true);
+                }
+                if(day.equals(new String("Tuesday")))
+                {
+                    tuesday.setChecked(true);
+                }
+                if(day.equals(new String("Wednesday")))
+                {
+                    wednesday.setChecked(true);
+                }
+                if(day.equals(new String("Thursday")))
+                {
+                    thursday.setChecked(true);
+                }
+                if(day.equals(new String("Friday")))
+                {
+                    friday.setChecked(true);
+                }
+                if(day.equals(new String("Saturday")))
+                {
+                    saturday.setChecked(true);
+                }
+            }
         }
     }
 
@@ -74,10 +129,9 @@ public class EditProgram extends ActionBarActivity {
         HashMap<String, String> queryValues = new HashMap<String, String>();
 
         name = (EditText) findViewById(R.id.name);
-        day = (EditText) findViewById(R.id.day);
         time = (EditText) findViewById(R.id.time);
         channel = (EditText) findViewById(R.id.channel);
-        notification = (EditText) findViewById(R.id.notification);
+        notification = (Spinner) findViewById(R.id.comboNotification);
 
         Intent myIntent = getIntent();
 
@@ -85,12 +139,43 @@ public class EditProgram extends ActionBarActivity {
 
         queryValues.put("id", id);
         queryValues.put("name", name.getText().toString());
-        queryValues.put("day", day.getText().toString());
         queryValues.put("time", time.getText().toString());
         queryValues.put("channel", channel.getText().toString());
-        queryValues.put("notification", notification.getText().toString());
+        queryValues.put("notification", notification.getSelectedItem().toString());
 
-        db.updateSeries(queryValues);
+        db.updateShow(queryValues);
+
+        ArrayList<String> days = new ArrayList<String>();
+
+        if(sunday.isChecked()){
+            days.add("Sunday");
+        }
+
+        if(monday.isChecked()){
+            days.add("Monday");
+        }
+
+        if(tuesday.isChecked()){
+            days.add("Tuesday");
+        }
+
+        if(wednesday.isChecked()){
+            days.add("Wednesday");
+        }
+
+        if(thursday.isChecked()){
+            days.add("Thursday");
+        }
+
+        if(friday.isChecked()){
+            days.add("Friday");
+        }
+
+        if(saturday.isChecked()){
+            days.add("Saturday");
+        }
+
+        db.updateDays(id, days);
 
         this.callMainActivity(view);
 
@@ -99,5 +184,15 @@ public class EditProgram extends ActionBarActivity {
     public void callMainActivity(View view){
         Intent mainIntent = new Intent(getApplication(), MainActivity.class);
         startActivity(mainIntent);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

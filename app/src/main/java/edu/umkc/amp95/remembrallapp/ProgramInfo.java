@@ -16,9 +16,9 @@ import java.util.HashMap;
 public class ProgramInfo extends ActionBarActivity {
 
     TextView name;
-    TextView day;
     TextView time;
     TextView channel;
+    TextView days;
     TextView notification;
 
     DBHelper db = new DBHelper(this);
@@ -29,7 +29,7 @@ public class ProgramInfo extends ActionBarActivity {
         setContentView(R.layout.activity_activity_program_info);
 
         name = (TextView) findViewById(R.id.name);
-        day = (TextView) findViewById(R.id.day);
+        days = (TextView) findViewById(R.id.days);
         time = (TextView) findViewById(R.id.time);
         channel = (TextView) findViewById(R.id.channel);
         notification = (TextView) findViewById(R.id.notification);
@@ -37,12 +37,12 @@ public class ProgramInfo extends ActionBarActivity {
         Intent myIntent = getIntent();
         String id = myIntent.getStringExtra("id");
 
-        HashMap<String, String> programInfo = db.selectSeries(id);
+        HashMap<String, String> programInfo = db.selectShow(id);
 
         if(programInfo.size() != 0){
             name.setText(programInfo.get("name"));
-            day.setText(programInfo.get("day"));
             time.setText(programInfo.get("time"));
+            days.setText(programInfo.get("days"));
             channel.setText(programInfo.get("channel"));
             notification.setText(programInfo.get("notification"));
         }
@@ -93,7 +93,7 @@ public class ProgramInfo extends ActionBarActivity {
         Intent myIntent = getIntent();
         String id = myIntent.getStringExtra("id");
 
-        db.deleteSeries(id);
+        db.deleteShow(id);
 
         this.callMainActivity(view);
 
